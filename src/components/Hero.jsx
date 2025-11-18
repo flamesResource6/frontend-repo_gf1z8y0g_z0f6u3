@@ -86,18 +86,19 @@ export default function Hero({ t }) {
             referrerPolicy="no-referrer"
           />
         ))}
-        {/* Contrast overlays for readability */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-transparent"></div>
+        {/* 15% darkening overlay for better contrast */}
+        <div className="pointer-events-none absolute inset-0 bg-black/15"></div>
+        {/* Gentle fade into white at the bottom to keep the page theme */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-white"></div>
       </div>
 
       {/* Content */}
       <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center px-6 pt-24 pb-16 text-center sm:pt-32">
         <p className="mb-3 text-sm uppercase tracking-[0.18em] text-[#0A2B7C] drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">{t.common.brand}</p>
-        <h1 className="mb-4 bg-gradient-to-r from-[#FF33CC] to-[#6F00FF] bg-clip-text text-4xl font-extrabold leading-tight text-transparent sm:text-6xl drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]">
+        <h1 className="mb-4 bg-gradient-to-r from-[#FF33CC] to-[#6F00FF] bg-clip-text text-5xl font-extrabold leading-tight text-transparent sm:text-7xl drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]">
           {t.hero.headline}
         </h1>
-        <p className="mx-auto mb-8 max-w-3xl text-lg text-[#333333] sm:text-xl drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
+        <p className="mx-auto mb-8 max-w-3xl text-xl text-[#333333] sm:text-2xl drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
           {t.hero.sub}
         </p>
 
