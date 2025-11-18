@@ -1,19 +1,82 @@
 import { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 
-const images = [
+// Fallback images (original static URLs)
+const fallbackImages = [
   'https://disk.yandex.ru/i/U7BjJyXkuarMYw',
   'https://disk.yandex.ru/i/OvEaqVp15d3Vkg',
   'https://disk.yandex.ru/i/ArjAnSsb3AIzfQ',
 ];
 
+// Requested new carousel images
+const requestedImages = [
+  'https://downloader.disk.yandex.ru/preview/ba5585933c4a075ca7bed21e189d886b91182d8d29ef27e0517718898dd1859c/691ca427/7EsL_ZCPzAAQVG3lz5x5xkwirBMV0Uz3OMgsQmg4I8TvrbKmzGwqD2nhHGZwinv5PRK1HDVVZsOJNTMct9nzVw%3D%3D?uid=0&filename=img1.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=0&tknv=v3&size=2560x1440',
+  'https://downloader.disk.yandex.ru/preview/d9e64db687c7ca09b546b642fd5877d22e8f8c24c2a6f594b04f0c5785ce0925/691ca40b/xV6qqMziGl0FNZXlZsOm68yAOFjHQxuDEtoeYYOR3fmWsLfIPcGkygVkcWCMmBz6oPgp1U4wETe2lMd05VIAuw%3D%3D?uid=0&filename=img2.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=0&tknv=v3&size=2048x2048',
+  'https://downloader.disk.yandex.ru/preview/87ecf89be68ca3935931cd358cbc4921d97858831181c407bab195bdf1709f8f/691ca29a/_UGKYnmW4LF0UfYtfbEZKEwirBMV0Uz3OMgsQmg4I8QRWrl_pdsWIL0aZjpusKUrx1Anw9euTMs4lPLIsqKD0A%3D%3D?uid=0&filename=img3.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=0&tknv=v3&size=2048x2048',
+];
+
+function preloadImage(src, timeoutMs = 8000) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const timer = setTimeout(() => {
+      img.onload = null;
+      img.onerror = null;
+      reject(new Error('timeout'));
+    }, timeoutMs);
+    img.onload = () => {
+      clearTimeout(timer);
+      resolve(src);
+    };
+    img.onerror = () => {
+      clearTimeout(timer);
+      reject(new Error('error'));
+    };
+    img.referrerPolicy = 'no-referrer';
+    img.src = src;
+  });
+}
+
 export default function Hero({ t }) {
+  const [images, setImages] = useState(fallbackImages);
   const [index, setIndex] = useState(0);
 
+  // Try to use the requested images; fall back to the originals if any fail
   useEffect(() => {
+    let active = true;
+    Promise.allSettled(requestedImages.map((src) => preloadImage(src)))
+      .then((results) => {
+        if (!active) return;
+        const available = results
+          .map((r, i) => (r.status === 'fulfilled' ? requestedImages[i] : null))
+          .filter(Boolean);
+        if (available.length === requestedImages.length) {
+          setImages(available);
+          setIndex(0);
+        } else {
+          // If some fail, still use the ones that loaded; otherwise stick to fallback
+          if (available.length > 0) {
+            setImages(available);
+            setIndex(0);
+          } else {
+            setImages(fallbackImages);
+          }
+        }
+      })
+      .catch(() => {
+        if (!active) return;
+        setImages(fallbackImages);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  // Carousel rotation
+  useEffect(() => {
+    if (!images || images.length === 0) return;
     const id = setInterval(() => setIndex((i) => (i + 1) % images.length), 4500);
     return () => clearInterval(id);
-  }, []);
+  }, [images]);
 
   return (
     <section className="relative min-h-[88vh] w-full overflow-hidden bg-white">
@@ -21,12 +84,13 @@ export default function Hero({ t }) {
       <div className="absolute inset-0">
         {images.map((src, i) => (
           <img
-            key={src}
+            key={`${src}-${i}`}
             src={src}
             alt="Novacard hero visual"
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${i === index ? 'opacity-100' : 'opacity-0'}`}
             decoding="async"
             loading={i === 0 ? 'eager' : 'lazy'}
+            referrerPolicy="no-referrer"
           />
         ))}
         {/* white overlay to ensure readability at edges */}
