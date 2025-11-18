@@ -2,13 +2,12 @@ import { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 
 const images = [
-  // Provided static image URLs (option 1)
   'https://disk.yandex.ru/i/U7BjJyXkuarMYw',
   'https://disk.yandex.ru/i/OvEaqVp15d3Vkg',
   'https://disk.yandex.ru/i/ArjAnSsb3AIzfQ',
 ];
 
-export default function Hero() {
+export default function Hero({ t }) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -36,23 +35,24 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center px-6 pt-24 pb-16 text-center sm:pt-32">
-        <p className="mb-3 text-sm uppercase tracking-[0.18em] text-[#0A2B7C]">NOVACARD</p>
+        <p className="mb-3 text-sm uppercase tracking-[0.18em] text-[#0A2B7C]">{t.common.brand}</p>
         <h1 className="mb-4 bg-gradient-to-r from-[#FF33CC] to-[#6F00FF] bg-clip-text text-4xl font-extrabold leading-tight text-transparent sm:text-6xl">
-          Así funciona tu NOVACARD
+          {t.hero.headline}
         </h1>
         <p className="mx-auto mb-8 max-w-3xl text-lg text-[#333333] sm:text-xl">
-          Sin anualidad, con recompensas reales y control total desde tu app.
+          {t.hero.sub}
         </p>
 
         <div className="flex flex-col items-center gap-3 sm:flex-row">
           <a href="#apply" className="group inline-flex items-center rounded-xl bg-gradient-to-r from-[#FF33CC] to-[#6F00FF] px-6 py-3 text-base font-semibold text-white shadow-lg shadow-fuchsia-400/20 ring-1 ring-fuchsia-300/40 transition hover:translate-y-[-1px]">
-            Obtener Tarjeta
+            {t.hero.primary}
             <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-0.5" />
           </a>
           <a href="#apply" className="inline-flex items-center rounded-xl bg-black px-6 py-3 text-base font-semibold text-white">
-            Obtener Tarjeta
+            {t.hero.secondary}
             <ArrowRight className="ml-2 h-5 w-5" />
           </a>
+          <div className="text-xs text-[#666666] mt-1">{t.hero.secondaryNote}</div>
         </div>
       </div>
     </section>
