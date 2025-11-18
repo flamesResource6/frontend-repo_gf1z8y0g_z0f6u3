@@ -5,8 +5,8 @@ import Steps from './components/Steps';
 
 function App() {
   return (
-    <div className="min-h-screen w-full bg-slate-950 text-white">
-      {/* Hero with Spline cover */}
+    <div className="min-h-screen w-full bg-white text-[#333333]">
+      {/* Hero with image carousel */}
       <Hero />
 
       {/* Three feature sections */}
@@ -22,8 +22,8 @@ function App() {
       <Steps />
 
       {/* Footer */}
-      <footer className="bg-slate-950 py-12">
-        <div className="mx-auto max-w-6xl px-6 text-center text-blue-300/70">
+      <footer className="py-12">
+        <div className="mx-auto max-w-6xl px-6 text-center text-[#666666]">
           © {new Date().getFullYear()} Novacard. All rights reserved.
         </div>
       </footer>
