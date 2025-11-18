@@ -98,8 +98,10 @@ export default function Hero({ t }) {
         <h1 className="mb-4 bg-gradient-to-r from-[#FF33CC] to-[#6F00FF] bg-clip-text text-5xl font-extrabold leading-tight text-transparent sm:text-7xl drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]">
           {t.hero.headline}
         </h1>
-        <p className="mx-auto mb-8 max-w-3xl text-xl text-[#333333] sm:text-2xl drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
-          {t.hero.sub}
+        <p className="mx-auto mb-8 max-w-3xl text-xl sm:text-2xl">
+          <span className="inline-block rounded-2xl bg-white/60 px-4 py-2 text-[#1f2937] shadow-sm ring-1 ring-white/50 backdrop-blur-sm">
+            {t.hero.sub}
+          </span>
         </p>
 
         <div className="flex flex-col items-center gap-3 sm:flex-row">
