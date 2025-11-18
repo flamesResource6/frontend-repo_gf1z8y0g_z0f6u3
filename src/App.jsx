@@ -4,6 +4,7 @@ import { FeaturesGrid, FastLimit } from './components/Feature';
 import Comparison from './components/Comparison';
 import Steps from './components/Steps';
 import { translations, defaultLang } from './i18n';
+import BackgroundFX from './components/BackgroundFX';
 
 function App() {
   const [lang, setLang] = useState(defaultLang);
@@ -21,6 +22,7 @@ function App() {
 
   return (
     <div className="min-h-screen w-full bg-white text-[#333333]">
+      <BackgroundFX />
       {/* Language switcher */}
       <div className="fixed right-4 top-4 z-50">
         <div className="rounded-full border border-[#EEEEEE] bg-white/90 shadow-md backdrop-blur px-2 py-1 flex items-center gap-1">
