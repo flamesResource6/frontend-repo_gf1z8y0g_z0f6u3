@@ -8,12 +8,9 @@ const fallbackImages = [
   'https://disk.yandex.ru/i/ArjAnSsb3AIzfQ',
 ];
 
-// Requested new carousel images
-const requestedImages = [
-  'https://downloader.disk.yandex.ru/preview/ba5585933c4a075ca7bed21e189d886b91182d8d29ef27e0517718898dd1859c/691ca427/7EsL_ZCPzAAQVG3lz5x5xkwirBMV0Uz3OMgsQmg4I8TvrbKmzGwqD2nhHGZwinv5PRK1HDVVZsOJNTMct9nzVw%3D%3D?uid=0&filename=img1.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=0&tknv=v3&size=2560x1440',
-  'https://downloader.disk.yandex.ru/preview/d9e64db687c7ca09b546b642fd5877d22e8f8c24c2a6f594b04f0c5785ce0925/691ca40b/xV6qqMziGl0FNZXlZsOm68yAOFjHQxuDEtoeYYOR3fmWsLfIPcGkygVkcWCMmBz6oPgp1U4wETe2lMd05VIAuw%3D%3D?uid=0&filename=img2.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=0&tknv=v3&size=2048x2048',
-  'https://downloader.disk.yandex.ru/preview/87ecf89be68ca3935931cd358cbc4921d97858831181c407bab195bdf1709f8f/691ca29a/_UGKYnmW4LF0UfYtfbEZKEwirBMV0Uz3OMgsQmg4I8QRWrl_pdsWIL0aZjpusKUrx1Anw9euTMs4lPLIsqKD0A%3D%3D?uid=0&filename=img3.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=0&tknv=v3&size=2048x2048',
-];
+// New requested image (1280x720). We'll use it for all carousel slots to keep the cycle consistent.
+const newImage1280 = 'https://downloader.disk.yandex.ru/preview/d9e64db687c7ca09b546b642fd5877d22e8f8c24c2a6f594b04f0c5785ce0925/691ca40b/xV6qqMziGl0FNZXlZsOm68yAOFjHQxuDEtoeYYOR3fmWsLfIPcGkygVkcWCMmBz6oPgp1U4wETe2lMd05VIAuw%3D%3D?uid=0&filename=img2.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=0&tknv=v3&size=1280x720';
+const requestedImages = [newImage1280, newImage1280, newImage1280];
 
 function preloadImage(src, timeoutMs = 8000) {
   return new Promise((resolve, reject) => {
@@ -49,17 +46,11 @@ export default function Hero({ t }) {
         const available = results
           .map((r, i) => (r.status === 'fulfilled' ? requestedImages[i] : null))
           .filter(Boolean);
-        if (available.length === requestedImages.length) {
+        if (available.length > 0) {
           setImages(available);
           setIndex(0);
         } else {
-          // If some fail, still use the ones that loaded; otherwise stick to fallback
-          if (available.length > 0) {
-            setImages(available);
-            setIndex(0);
-          } else {
-            setImages(fallbackImages);
-          }
+          setImages(fallbackImages);
         }
       })
       .catch(() => {
